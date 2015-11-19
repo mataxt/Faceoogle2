@@ -70,15 +70,4 @@
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/servlet/AdminServlet</url-pattern>
   </servlet-mapping>
-<servlet>
-		<servlet-name>faceoogle2-servlet</servlet-name>
-		<servlet-class>
-			org.apache.wink.server.internal.servlet.RestServlet
-		</servlet-class>
-	</servlet>
-     
-	<servlet-mapping>
-		<servlet-name>faceoogle2-servlet</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
 </web-app>

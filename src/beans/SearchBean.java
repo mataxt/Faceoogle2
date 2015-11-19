@@ -3,7 +3,6 @@ package beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 import javax.faces.bean.ManagedBean;
 
 import javax.faces.bean.ViewScoped;
@@ -17,7 +16,8 @@ public class SearchBean implements Serializable {
 	private String searchName;
 
 	public ArrayList<String> getNames() {
-		return UserLogic.getUserNames(searchName);
+		return null;
+		//return UserLogic.getUserNames(searchName);
 	}
 
 	public String getSearchName() {

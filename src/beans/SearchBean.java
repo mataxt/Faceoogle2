@@ -16,8 +16,7 @@ public class SearchBean implements Serializable {
 	private String searchName;
 
 	public ArrayList<String> getNames() {
-		return null;
-		//return UserLogic.getUserNames(searchName);
+		return UserLogic.getUserNames(searchName);
 	}
 
 	public String getSearchName() {

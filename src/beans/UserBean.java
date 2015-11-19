@@ -7,6 +7,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.wink.client.Resource;
+import org.apache.wink.client.RestClient;
+
 import logic.UserLogic;
 
 @SessionScoped
@@ -87,15 +90,20 @@ public class UserBean implements Serializable {
 	}
 
 	public String login() {
-		if (UserLogic.login(username, password)) {
-			loginMessage = "";
-			loggedIn = true;
-			return "index.xhtml";
-		} else {
-			loginMessage = "Wrong username or password";
-			loggedIn = false;
-			return "login.xhtml";
-		}
+		RestClient client = new RestClient();
+		Resource res = client.resource("http://localhost:8080/Faceoogle/rest/user/login?user="+username+"&pass="+password);
+		String str = res.accept("text/plain").get(String.class);
+		System.out.println("\n\n\nHERE " + str);
+		return "";
+//		if (UserLogic.login(username, password)) {
+//			loginMessage = "";
+//			loggedIn = true;
+//			return "index.xhtml";
+//		} else {
+//			loginMessage = "Wrong username or password";
+//			loggedIn = false;
+//			return "login.xhtml";
+//		}
 	}
 	
 	public String logout() {

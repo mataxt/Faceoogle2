@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from UserLogicService WSDL service -->
+
+  <service name="UserLogic" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://logic"/>
+      <parameter name="wsdlServiceElement" value="UserLogicService"/>
+      <parameter name="schemaQualified" value="http://logic"/>
+      <parameter name="wsdlServicePort" value="UserLogic"/>
+      <parameter name="className" value="logic.UserLogic"/>
+      <parameter name="wsdlPortType" value="UserLogic"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://logic" xmlns:retNS="http://logic" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="getUserInfo" qname="operNS:getUserInfo" returnQName="retNS:getUserInfoReturn" returnType="rtns:anyType" soapAction="">
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:user" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://logic" xmlns:retNS="http://logic" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="login" qname="operNS:login" returnQName="retNS:loginReturn" returnType="rtns:boolean" soapAction="">
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:password" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://logic" xmlns:retNS="http://logic" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="addUser" qname="operNS:addUser" returnQName="retNS:addUserReturn" returnType="rtns:boolean" soapAction="">
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:username" type="tns:string"/>
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:password" type="tns:string"/>
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:name" type="tns:string"/>
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:birthdate" type="tns:date"/>
+        <parameter xmlns:pns="http://logic" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:gender" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://logic" xmlns:retNS="http://logic" xmlns:rtns="http://logic" xmlns:tns="http://logic" name="getUserNames" qname="operNS:getUserNames" returnQName="retNS:getUserNamesReturn" returnType="rtns:ArrayOf_xsd_anyType" returnItemQName="tns:item" soapAction="">
+        <parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" xmlns:pns="http://logic" qname="pns:name" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="getUserNames addUser getUserInfo login"/>
+
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;addUserResponse" type="java:logic.AddUserResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <arrayMapping xmlns:ns="http://logic" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_anyType" type="java:java.lang.Object[]" innerType="cmp-ns:anyType" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;getUserInfo" type="java:logic.GetUserInfo" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;getUserNames" type="java:logic.GetUserNames" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;loginResponse" type="java:logic.LoginResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;getUserNamesResponse" type="java:logic.GetUserNamesResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;login" type="java:logic.Login" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;getUserInfoResponse" type="java:logic.GetUserInfoResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://logic" qname="ns:&gt;addUser" type="java:logic.AddUser" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+  </service>
+</deployment>

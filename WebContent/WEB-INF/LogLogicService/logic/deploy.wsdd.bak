@@ -1,0 +1,92 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from LogLogicService WSDL service -->
+
+  <service name="LogLogic" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://logic"/>
+      <parameter name="wsdlServiceElement" value="LogLogicService"/>
+      <parameter name="schemaQualified" value="http://logic"/>
+      <parameter name="wsdlServicePort" value="LogLogic"/>
+      <parameter name="className" value="logic.LogLogicSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="LogLogic"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="writeLog" qname="operNS:writeLog" xmlns:operNS="http://logic" returnQName="retNS:writeLogReturn" xmlns:retNS="http://logic" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:username" xmlns:pns="http://logic" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:receiver" xmlns:pns="http://logic" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:messageLogs" xmlns:pns="http://logic" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getLogs" qname="operNS:getLogs" xmlns:operNS="http://logic" returnQName="retNS:getLogsReturn" xmlns:retNS="http://logic" returnType="rtns:ArrayOf_xsd_anyType" xmlns:rtns="http://logic" returnItemQName="tns:item" xmlns:tns="http://logic" soapAction="" >
+        <parameter qname="pns:receiver" xmlns:pns="http://logic" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getFeed" qname="operNS:getFeed" xmlns:operNS="http://logic" returnQName="retNS:getFeedReturn" xmlns:retNS="http://logic" returnType="rtns:ArrayOf_xsd_anyType" xmlns:rtns="http://logic" returnItemQName="tns:item" xmlns:tns="http://logic" soapAction="" >
+        <parameter qname="pns:username" xmlns:pns="http://logic" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="writeLog getLogs getFeed"/>
+
+      <arrayMapping
+        xmlns:ns="http://logic"
+        qname="ns:ArrayOf_xsd_anyType"
+        type="java:java.lang.Object[]"
+        innerType="cmp-ns:anyType" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://logic"
+        qname="ns:>getFeedResponse"
+        type="java:logic.GetFeedResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://logic"
+        qname="ns:>getFeed"
+        type="java:logic.GetFeed"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://logic"
+        qname="ns:>writeLogResponse"
+        type="java:logic.WriteLogResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://logic"
+        qname="ns:>getLogs"
+        type="java:logic.GetLogs"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://logic"
+        qname="ns:>writeLog"
+        type="java:logic.WriteLog"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://logic"
+        qname="ns:>getLogsResponse"
+        type="java:logic.GetLogsResponse"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>

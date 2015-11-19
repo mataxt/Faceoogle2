@@ -10,11 +10,10 @@ import javax.faces.context.FacesContext;
 import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 
-import logic.UserLogic;
-
 @SessionScoped
 @ManagedBean(name = "userBean")
 public class UserBean implements Serializable {
+	private String path = "http://localhost:8080/Faceoogle2/rest/";
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
@@ -23,7 +22,7 @@ public class UserBean implements Serializable {
 	private String gender;
 	private String loginMessage, registerMessage;
 	private boolean loggedIn;
-	
+
 	public java.util.Date getBirthdate() {
 		return birthdate;
 	}
@@ -63,6 +62,7 @@ public class UserBean implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getLoginMessage() {
 		return loginMessage;
 	}
@@ -78,9 +78,14 @@ public class UserBean implements Serializable {
 	public void setRegisterMessage(String registerMessage) {
 		this.registerMessage = registerMessage;
 	}
-	
+
 	public String register() {
-		if (UserLogic.addUser(username, password, name, birthdate, gender)) {
+		RestClient client = new RestClient();
+		System.out.println(username+ " " +password+ " " +name+ " " +birthdate+ " " +gender);
+		Resource res = client.resource(path + "user/register?user=" + username + "&pass=" + password + "&name=" + name
+				+ "&birth=" + birthdate + "&gender=" + gender);
+		String str = res.accept("text/plain").get(String.class);
+		if (str.equals("true")) {
 			registerMessage = "";
 			return "index.xhtml";
 		} else {
@@ -91,27 +96,25 @@ public class UserBean implements Serializable {
 
 	public String login() {
 		RestClient client = new RestClient();
-		Resource res = client.resource("http://localhost:8080/Faceoogle/rest/user/login?user="+username+"&pass="+password);
+		Resource res = client.resource(path + "user/login?user=" + username + "&pass=" + password);
 		String str = res.accept("text/plain").get(String.class);
-		System.out.println("\n\n\nHERE " + str);
-		return "";
-//		if (UserLogic.login(username, password)) {
-//			loginMessage = "";
-//			loggedIn = true;
-//			return "index.xhtml";
-//		} else {
-//			loginMessage = "Wrong username or password";
-//			loggedIn = false;
-//			return "login.xhtml";
-//		}
+		if (str.equals("true")) {
+			loginMessage = "";
+			loggedIn = true;
+			return "index.xhtml";
+		} else {
+			loginMessage = "Wrong username or password";
+			loggedIn = false;
+			return "login.xhtml";
+		}
 	}
-	
+
 	public String logout() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		loggedIn = false;
 		return "login.xhtml";
 	}
-	
+
 	public String gotoMyProfile() {
 		return "profile.xhtml?faces-redirect=true" + "&user=" + username;
 	}

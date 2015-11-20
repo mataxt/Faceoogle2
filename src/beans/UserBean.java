@@ -2,6 +2,8 @@ package beans;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -9,6 +11,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
+
+import com.google.gson.Gson;
 
 @SessionScoped
 @ManagedBean(name = "userBean")
@@ -78,27 +82,17 @@ public class UserBean implements Serializable {
 	public void setRegisterMessage(String registerMessage) {
 		this.registerMessage = registerMessage;
 	}
-
-	public String register() {
-		RestClient client = new RestClient();
-		System.out.println(username+ " " +password+ " " +name+ " " +birthdate+ " " +gender);
-		Resource res = client.resource(path + "user/register?user=" + username + "&pass=" + password + "&name=" + name
-				+ "&birth=" + birthdate + "&gender=" + gender);
-		String str = res.accept("text/plain").get(String.class);
-		if (str.equals("true")) {
-			registerMessage = "";
-			return "index.xhtml";
-		} else {
-			registerMessage = "Please fill in all the fields in the correct format";
-			return "register.xhtml";
-		}
-	}
-
+	
 	public String login() {
+		Map<String, String> user = new HashMap<String, String>();
+		user.put("username", username);
+		user.put("password", password);
+		Gson gson = new Gson();
+		String json = gson.toJson(user);
 		RestClient client = new RestClient();
-		Resource res = client.resource(path + "user/login?user=" + username + "&pass=" + password);
-		String str = res.accept("text/plain").get(String.class);
-		if (str.equals("true")) {
+		Resource resource = client.resource(path + "user/login");
+		String response = resource.contentType("application/json").accept("text/plain").post(String.class, json);
+		if (response.equals("200")) {
 			loginMessage = "";
 			loggedIn = true;
 			return "index.xhtml";
@@ -108,6 +102,30 @@ public class UserBean implements Serializable {
 			return "login.xhtml";
 		}
 	}
+
+	public String register() {
+		Map<String, String> user = new HashMap<String, String>();
+		user.put("username", username);
+		user.put("password", password);
+		user.put("name", name);
+		user.put("birthdate", String.valueOf(birthdate));
+		user.put("gender", gender);
+		Gson gson = new Gson();
+		String json = gson.toJson(user);
+		RestClient client = new RestClient();
+		Resource resource = client.resource(path + "user/register");
+		String response = resource.contentType("application/json").accept("text/plain").post(String.class, json);
+		System.out.println("AAWDO " + response);
+		
+		if (response.equals("200")) {
+			registerMessage = "";
+			return "index.xhtml";
+		} else {
+			registerMessage = "Please fill in all the fields in the correct format";
+			return "register.xhtml";
+		}
+	}
+
 
 	public String logout() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();

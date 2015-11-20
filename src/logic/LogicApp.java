@@ -11,8 +11,8 @@ public class LogicApp extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
-		classes.add(Hello.class);
 		classes.add(UserLogic.class);
+		classes.add(LogLogic.class);
 		return classes;
 	}
 }

@@ -1,7 +1,10 @@
 package beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -9,12 +12,17 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import logic.LogLogic;
+import org.apache.wink.client.Resource;
+import org.apache.wink.client.RestClient;
+
+import com.google.gson.Gson;
+
 import vm.LogViewModel;
 
 @ViewScoped
 @ManagedBean(name = "logBean")
 public class LogBean implements Serializable {
+	private String path = "http://localhost:8080/Faceoogle2/rest/";
 	private static final long serialVersionUID = 1L;
 	private List<LogViewModel> myLogs;
 	private List<LogViewModel> myFeed;
@@ -28,13 +36,23 @@ public class LogBean implements Serializable {
 		return paramUser;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<LogViewModel> getLogs() {
-		myLogs = LogLogic.getLogs(paramUser);
+		RestClient client = new RestClient();
+		Resource res = client.resource(path + "log/logs?recv=" + paramUser);
+		String jsonLogs = res.accept("application/json").get(String.class);
+		Gson gson = new Gson();
+		myLogs = gson.fromJson(jsonLogs, ArrayList.class);
 		return myLogs;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<LogViewModel> getFeed() {
-		myFeed = LogLogic.getFeed(userBean.getUsername());
+		RestClient client = new RestClient();
+		Resource res = client.resource(path + "log/feed?user=" + userBean.getUsername());
+		String jsonLogs = res.accept("application/json").get(String.class);
+		Gson gson = new Gson();
+		myFeed = gson.fromJson(jsonLogs, ArrayList.class);
 		return myFeed;
 	}
 
@@ -55,12 +73,28 @@ public class LogBean implements Serializable {
 	}
 
 	public String sendWriteLog() {
-		LogLogic.writeLog(userBean.getUsername(), paramUser, messageLogs);
+		Map<String, String> log = new HashMap<String, String>();
+		log.put("writer", userBean.getUsername());
+		log.put("receiver", paramUser);
+		log.put("body", messageLogs);
+		Gson gson = new Gson();
+		String json = gson.toJson(log);
+		RestClient client = new RestClient();
+		Resource resource = client.resource(path + "log/writelog");
+		resource.contentType("application/json").accept("text/plain").post(String.class, json);
 		return null;
 	}
 
 	public String sendFeedLog() {
-		LogLogic.writeLog(userBean.getUsername(), userBean.getUsername(), messageLogs);
+		Map<String, String> log = new HashMap<String, String>();
+		log.put("writer", userBean.getUsername());
+		log.put("receiver", userBean.getUsername());
+		log.put("body", messageLogs);
+		Gson gson = new Gson();
+		String json = gson.toJson(log);
+		RestClient client = new RestClient();
+		Resource resource = client.resource(path + "log/writelog");
+		resource.contentType("application/json").accept("text/plain").post(String.class, json);
 		return null;
 	}
 

@@ -2,7 +2,9 @@ package logic;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.*;
 
@@ -14,23 +16,38 @@ import vm.UserViewModel;
 
 @Path("/user")
 public class UserLogic {
-	@GET
+	@SuppressWarnings("unchecked")
+	@POST
 	@Path("/login")
 	@Produces("text/plain")
-	public String login(@QueryParam("user") String username, @QueryParam("pass") String password) {
-		User usr = new User(username, password);
-		return String.valueOf(UserDB.checkUser(usr));
+	@Consumes("application/json")
+	public String login(String json) {
+		Gson gson = new Gson();
+		Map<String, String> jsonLog = gson.fromJson(json, HashMap.class);
+		User usr = new User(jsonLog.get("username"), jsonLog.get("password"));
+		boolean success = UserDB.checkUser(usr);
+		if (success)
+			return "200";
+		else
+			return "404";
 	}
 
-	@GET
+	@SuppressWarnings("unchecked")
+	@POST
 	@Path("/register")
 	@Produces("text/plain")
-	public String addUser(@QueryParam("user") String username, @QueryParam("pass") String password,
-			@QueryParam("name") String name, @QueryParam("birth") Date birthdate, @QueryParam("gender") String gender) {
-		User usr = new User(username, password, name, birthdate, gender);
-		return String.valueOf(UserDB.addUser(usr));
+	@Consumes("application/json")
+	public String addUser(String json) {
+		Gson gson = new Gson();
+		Map<String, String> jsonLog = gson.fromJson(json, HashMap.class);
+		User usr = new User(jsonLog.get("username"), jsonLog.get("password"), jsonLog.get("name"), Date.valueOf(jsonLog.get("birthdate")), jsonLog.get("gender"));
+		boolean success = UserDB.addUser(usr);
+		if (success)
+			return "200";
+		else
+			return "409";
 	}
-	
+
 	@GET
 	@Path("/usernames")
 	@Produces("application/json")
@@ -42,9 +59,9 @@ public class UserLogic {
 			names.add(user.getUsername());
 		}
 		String json = null;
-		if(names.size() > 0){
-		 Gson gson = new Gson();
-		 json = gson.toJson(names, ArrayList.class);
+		if (names.size() > 0) {
+			Gson gson = new Gson();
+			json = gson.toJson(names, ArrayList.class);
 		}
 		return json;
 	}
@@ -52,7 +69,7 @@ public class UserLogic {
 	@GET
 	@Path("/userinfo")
 	@Produces("application/json")
-	public String getUserInfo(@QueryParam("user")String user) {
+	public String getUserInfo(@QueryParam("user") String user) {
 		List<User> usrInfo = UserDB.searchUserName(user);
 		String json = null;
 		if (!usrInfo.isEmpty()) {

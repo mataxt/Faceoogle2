@@ -13,6 +13,8 @@ public class LogicApp extends Application {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(UserLogic.class);
 		classes.add(LogLogic.class);
+		classes.add(FriendLogic.class);
+		classes.add(ChatLogic.class);
 		return classes;
 	}
 }

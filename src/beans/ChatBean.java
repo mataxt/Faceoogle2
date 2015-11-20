@@ -2,7 +2,9 @@ package beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -10,12 +12,17 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import logic.ChatLogic;
+import org.apache.wink.client.Resource;
+import org.apache.wink.client.RestClient;
+
+import com.google.gson.Gson;
+
 import vm.ChatViewModel;
 
 @ViewScoped
 @ManagedBean(name = "chatBean")
 public class ChatBean implements Serializable {
+	private String path = "http://localhost:8080/Faceoogle2/rest/";
 	private static final long serialVersionUID = 1L;
 	private List<ChatViewModel> chatMessages = new ArrayList<ChatViewModel>();
 	private String paramUser = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
@@ -28,8 +35,13 @@ public class ChatBean implements Serializable {
 		this.userBean = userBean;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<ChatViewModel> getChatMessages() {
-		chatMessages = ChatLogic.getChatHistory(userBean.getUsername(), paramUser);
+		RestClient client = new RestClient();
+		Resource res = client.resource(path + "chat/history?chater=" + userBean.getUsername() + "&chatee="+paramUser);
+		String jsonLogs = res.accept("application/json").get(String.class);
+		Gson gson = new Gson();
+		chatMessages = gson.fromJson(jsonLogs, ArrayList.class);
 		return chatMessages;
 	}
 
@@ -49,7 +61,15 @@ public class ChatBean implements Serializable {
 		if(paramUser == null) {
 			return "index.xhtml";
 		}
-		ChatLogic.sendMessage(userBean.getUsername(), paramUser, message);
+		Map<String, String> msg = new HashMap<String, String>();
+		msg.put("chater", userBean.getUsername());
+		msg.put("chatee", paramUser);
+		msg.put("message", message);
+		Gson gson = new Gson();
+		String json = gson.toJson(msg);
+		RestClient client = new RestClient();
+		Resource resource = client.resource(path + "chat/sendmessage");
+		resource.contentType("application/json").accept("text/plain").post(String.class, json);
 		return null;
 	}
 

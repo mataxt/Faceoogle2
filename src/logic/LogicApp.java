@@ -15,6 +15,7 @@ public class LogicApp extends Application {
 		classes.add(LogLogic.class);
 		classes.add(FriendLogic.class);
 		classes.add(ChatLogic.class);
+		classes.add(HelloWorld.class);
 		return classes;
 	}
 }

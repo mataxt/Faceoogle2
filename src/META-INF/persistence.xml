@@ -11,7 +11,7 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 		<class>model.Chat</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
-			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.username" value="g3" />
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.password" value="kimtech2015" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://130.237.84.146:3306/faceoogle" />

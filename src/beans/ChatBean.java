@@ -22,7 +22,7 @@ import vm.ChatViewModel;
 @ViewScoped
 @ManagedBean(name = "chatBean")
 public class ChatBean implements Serializable {
-	private String path = "http://localhost:8080/Faceoogle2/rest/";
+	private String path = "http://130.237.84.211:8080/Faceoogle2/rest/";
 	private static final long serialVersionUID = 1L;
 	private List<ChatViewModel> chatMessages = new ArrayList<ChatViewModel>();
 	private String paramUser = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()

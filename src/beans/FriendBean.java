@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 @ViewScoped
 @ManagedBean(name = "friendBean")
 public class FriendBean implements Serializable {
-	private String path = "http://localhost:8080/Faceoogle2/rest/";
+	private String path = "http://130.237.84.211:8080/Faceoogle2/rest/";
 	private static final long serialVersionUID = 1L;
 	private String isMyFriend;
 	private String paramUser = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()

@@ -22,7 +22,7 @@ import vm.LogViewModel;
 @ViewScoped
 @ManagedBean(name = "logBean")
 public class LogBean implements Serializable {
-	private String path = "http://localhost:8080/Faceoogle2/rest/";
+	private String path = "http://130.237.84.211:8080/Faceoogle2/rest/";
 	private static final long serialVersionUID = 1L;
 	private List<LogViewModel> myLogs;
 	private List<LogViewModel> myFeed;

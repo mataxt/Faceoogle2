@@ -30,25 +30,6 @@ public class ChatDB {
 		return chatId;
 	}
 
-//	public static boolean checkChat(Chat chat) {
-//		boolean exists = false;
-//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UserPU");
-//		EntityManager em = emf.createEntityManager();
-//		try {
-//			String query = "from Chat where (chater = ?1 and chatee = ?2) or (chater = 2? and chatee =1?)";
-//			if (em.createQuery(query, Chat.class).setParameter(1, chat.getChater()).setParameter(2, chat.getChatee())
-//					.getSingleResult() != null) {
-//				exists = true;
-//			}
-//		} catch (NoResultException e) {
-//			return false;
-//		} finally {
-//			em.close();
-//		}
-//		emf.close();
-//		return exists;
-//	}
-
 	public static List<Chat> getChatHistory(Chat chat) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("UserPU");
 		EntityManager em = emf.createEntityManager();

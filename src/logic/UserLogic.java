@@ -40,7 +40,8 @@ public class UserLogic {
 	public String addUser(String json) {
 		Gson gson = new Gson();
 		Map<String, String> jsonLog = gson.fromJson(json, HashMap.class);
-		User usr = new User(jsonLog.get("username"), jsonLog.get("password"), jsonLog.get("name"), Date.valueOf(jsonLog.get("birthdate")), jsonLog.get("gender"));
+		User usr = new User(jsonLog.get("username"), jsonLog.get("password"), jsonLog.get("name"),
+				Date.valueOf(jsonLog.get("birthdate")), jsonLog.get("gender"));
 		boolean success = UserDB.addUser(usr);
 		if (success)
 			return "200";
@@ -70,13 +71,10 @@ public class UserLogic {
 	@Path("/userinfo")
 	@Produces("application/json")
 	public String getUserInfo(@QueryParam("user") String user) {
-		List<User> usrInfo = UserDB.searchUserName(user);
 		String json = null;
-		if (!usrInfo.isEmpty()) {
-			UserViewModel vm = new UserViewModel(UserDB.getUserInfo(user));
-			Gson gson = new Gson();
-			json = gson.toJson(vm, UserViewModel.class);
-		}
+		UserViewModel vm = new UserViewModel(UserDB.getUserInfo(user));
+		Gson gson = new Gson();
+		json = gson.toJson(vm, UserViewModel.class);
 		return json;
 	}
 }

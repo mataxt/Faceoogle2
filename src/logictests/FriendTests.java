@@ -1,4 +1,4 @@
-package Tests.logic;
+package logictests;
 
 import java.sql.Date;
 import java.util.Random;

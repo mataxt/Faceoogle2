@@ -39,9 +39,9 @@ public class ChatBean implements Serializable {
 	public List<ChatViewModel> getChatMessages() {
 		RestClient client = new RestClient();
 		Resource res = client.resource(path + "chat/history?chater=" + userBean.getUsername() + "&chatee="+paramUser);
-		String jsonLogs = res.accept("application/json").get(String.class);
+		String jsonChat = res.accept("application/json").get(String.class);
 		Gson gson = new Gson();
-		chatMessages = gson.fromJson(jsonLogs, ArrayList.class);
+		chatMessages = gson.fromJson(jsonChat, ArrayList.class);
 		return chatMessages;
 	}
 

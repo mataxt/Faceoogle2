@@ -2,7 +2,6 @@ package vm;
 
 import java.sql.Date;
 
-import model.User;
 
 public class UserViewModel {
 	private String username;
@@ -10,11 +9,11 @@ public class UserViewModel {
 	private Date birthDate;
 	private String gender;
 	
-	public UserViewModel(User user) {
-		this.username = user.getUsername();
-		this.name = user.getName();
-		this.birthDate = user.getBirthDate();
-		this.gender = user.getGender();
+	public UserViewModel(String username,String name,Date birthdate,String gender) {
+		this.username = username;
+		this.name = name;
+		this.birthDate = birthdate;
+		this.gender = gender;
 	}
 	
 	public String getUsername() {

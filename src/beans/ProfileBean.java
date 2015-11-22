@@ -20,14 +20,12 @@ public class ProfileBean implements Serializable {
 	private String path = "http://130.237.84.211:8080/Faceoogle2/rest/";
 	private static final long serialVersionUID = 1L;
 	private String paramUser = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
-			.getRequest()).getParameter("user");;
+			.getRequest()).getParameter("user");
 	private UserViewModel vm;
 
 	public UserViewModel getVm() {
-		String user = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest())
-				.getParameter("user");
 		RestClient client = new RestClient();
-		Resource res = client.resource(path + "user/userinfo?user=" + user);
+		Resource res = client.resource(path + "user/userinfo?user=" + paramUser);
 		String jsonNames = res.accept("application/json").get(String.class);
 		Gson gson = new Gson();
 		vm = gson.fromJson(jsonNames, UserViewModel.class);

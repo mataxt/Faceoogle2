@@ -72,7 +72,8 @@ public class UserLogic {
 	@Produces("application/json")
 	public String getUserInfo(@QueryParam("user") String user) {
 		String json = null;
-		UserViewModel vm = new UserViewModel(UserDB.getUserInfo(user));
+		User usr = UserDB.getUserInfo(user);
+		UserViewModel vm = new UserViewModel(usr.getUsername(),usr.getPassword(),usr.getBirthDate(),usr.getGender());
 		Gson gson = new Gson();
 		json = gson.toJson(vm, UserViewModel.class);
 		return json;

@@ -29,18 +29,15 @@ public class User implements Serializable {
 	public User() {}
 
 	public User(String username) {
-		super();
 		this.username = username;
 	}
 
 	public User(String username, String password) {
-		super();
 		this.username = username;
 		this.password = password;
 	}
 
 	public User(String username, String password, String name, Date birthDate, String gender) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -50,7 +47,6 @@ public class User implements Serializable {
 	}
 
 	public User(String username, String password, String name, Date birthDate, String gender, List<User> friends) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.name = name;

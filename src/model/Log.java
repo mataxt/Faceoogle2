@@ -25,7 +25,6 @@ public class Log implements Serializable {
 	public Log() {}
 
 	public Log(String writer, String receiver, String body) {
-		super();
 		this.writer = writer;
 		this.receiver = receiver;
 		this.body = body;
